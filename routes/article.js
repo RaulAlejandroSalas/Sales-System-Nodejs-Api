@@ -1,14 +1,14 @@
 import routerx from 'express-promise-router';
 import articleController from '../controllers/ArticleController';
-
+import auth from '../middlewares/auth'
 const router = routerx();
 
-router.post('/add',articleController.add);
-router.get('/query',articleController.query);
-router.get('/list',articleController.list);
-router.put('/update',articleController.update);
-router.delete('/remove',articleController.remove);
-router.put('/activate',articleController.activate);
-router.put('/deactivate',articleController.deactivate);
+router.post('/add',auth.verifyGrocer,articleController.add);
+router.get('/query',auth.verifyGrocer,articleController.query);
+router.get('/list',auth.verifyGrocer,articleController.list);
+router.put('/update',auth.verifyGrocer,articleController.update);
+router.delete('/remove',auth.verifyGrocer,articleController.remove);
+router.put('/activate',auth.verifyGrocer,articleController.activate);
+router.put('/deactivate',auth.verifyGrocer,articleController.deactivate);
 
 export default router;
