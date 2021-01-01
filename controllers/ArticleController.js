@@ -28,6 +28,22 @@ export default{
             next(error);            
         }
     },
+    queryBarCode:async (req,res,next)=>{
+        try {
+            const resp = await models.Article.findById({code:req.query.code})
+                                             .populate('category',{name:1}) 
+            if(!resp){
+                res.status(404).send({message: `The Article not exist with the Query: ${req.query.code}`})
+            }else{
+                res.status(200).send(resp);
+            }
+        } catch (error) {
+            res.status(500).send({
+                message: `Error Executing the Query ${req.query.code}`
+            })
+            next(error);            
+        }
+    },
     list:async (req,res,next)=>{
         try {
             let pattern = req.query.filter;
