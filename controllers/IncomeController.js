@@ -58,6 +58,35 @@ export default{
             next(error);            
         }  
     },
+    getIncomesLast12Months: async(req,res,next)=>{
+        try {
+            const response = await models.Income.aggregate(
+                [
+                    {
+                        $group:{
+                            _id:{ 
+                                month:{ $month: "$createdAt"},
+                                year: { $year: "$createdAt"}
+                            }, 
+                            total: { $sum:"$total"},
+                            number: { $sum:1}
+                        }
+                    },
+                    {
+                        $sort:{
+                            "_id.year":-1,"_id.month":-1
+                        }
+                    }
+                ]
+            ).limit(12)
+            res.status(200).json(response)
+        } catch (error) {
+            res.status(500).send({
+                message: `Error GettingSalesLast12Months a Income with id: ${req.body.id}`
+            })
+            next(error);            
+        }   
+    },
     activate:async (req,res,next)=>{
         try {
             const resp = await models.Income.findByIdAndUpdate({_id:req.body.id},{state:1});

@@ -6,6 +6,8 @@ const router = routerx();
 router.post('/add',auth.verifySeller,saleController.add);
 router.get('/query',auth.verifySeller,saleController.query);
 router.get('/list',auth.verifySeller,saleController.list);
+router.get('/kpilast12months', auth.verifyUser,saleController.getSalesLast12Months)
+
 router.put('/activate',auth.verifySeller,saleController.activate);
 router.put('/deactivate',auth.verifySeller,saleController.deactivate);
 
